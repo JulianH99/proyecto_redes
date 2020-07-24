@@ -1,0 +1,36 @@
+{% extends 'grade_predictions/layouts/dashboard.html' %}
+
+{% block title %}
+    Dashboard
+{% endblock %}
+
+{% block content %}
+    <div style="margin-top: 14px"></div>
+    {% include 'grade_predictions/students/dashboard/components/tabs.html' %}
+
+    <div class="ui four cards" style="margin-top: 40px">
+
+
+        {% for subject in user.related_user.subjects.all %}
+
+            <a class="ui card fluid" href="{% url 'subject_detail' subject.id %}">
+                <div class="content">
+                    <div class="header">
+                        {{ subject.name }}
+                    </div>
+
+                    <div class="description">
+                        <p>Profesor: <b>{{ subject.teachers.all  | first}}</b></p>
+                    </div>
+                </div>
+            </a>
+
+
+        {% empty %}
+            <div class="segment fluid ui">
+                <p>No hay materias registradas</p>
+            </div>
+
+        {% endfor %}
+    </div>
+{% endblock %}

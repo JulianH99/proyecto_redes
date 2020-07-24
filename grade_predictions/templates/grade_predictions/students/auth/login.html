@@ -1,0 +1,58 @@
+{% extends 'grade_predictions/layouts/auth.html' %}
+
+{% block title %} Ingreso {% endblock %}
+
+
+{% block content %}
+
+    <div class="ui grid middle aligned center aligned" style="height: 100vh">
+
+        <div class="row centered">
+            <div class="six wide column">
+
+                <div class="ui fluid raised card">
+                    <div class="content">
+                        <h2 class="ui dividing header">Ingreso de estudiante</h2>
+                        <form method="post" class="ui form {% if form.password.errors or form.student_code.errors %} error {% endif %}">
+                            {% csrf_token %}
+
+                            <div class="field {% if form.student_code.errors %} error  {% endif %}">
+                                <label for="{{ form.student_code.id_for_label }}">Código estudiantil</label>
+                                {{ form.student_code }}
+                                {% if form.student_code.errors %}
+                                    <div class="ui error message">
+                                        {% for error in form.student_code.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <div class="field  {% if form.password.errors %} error {% endif %}">
+                                <label for="{{ form.password.id_for_label }}">
+                                    Contraseña
+                                </label>
+                                {{ form.password }}
+                                {% if form.password.errors %}
+                                    <div class="ui error message">
+                                        {% for error in form.password.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+
+                            </div>
+
+                            <div class="field">
+                                <button class="ui primary button">Ingresor</button>
+                                <a class="ui secondary button" href="{% url 'signup' %}">Registrarse</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+{% endblock %}

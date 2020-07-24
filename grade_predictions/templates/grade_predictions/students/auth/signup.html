@@ -1,0 +1,72 @@
+{% extends 'grade_predictions/layouts/auth.html' %}
+
+{% block title %} Registro {% endblock %}
+
+
+{% block content %}
+
+    <div class="ui grid middle aligned center aligned" style="height: 100vh">
+
+        <div class="row centered">
+            <div class="six wide column">
+
+                <div class="ui fluid raised card">
+                    <div class="content">
+                        <h2 class="ui dividing header">Registro de estudiante</h2>
+
+                        {{ form.errors }}
+                        <form method="post" class="ui form">
+                            {% csrf_token %}
+
+                            <div class="field">
+                                <label for="{{ form.email.id_for_label }}">Correo electrónico</label>
+                                {{ form.email }}
+
+
+                                <span class="ui blue label" style="margin-top: 5px">Debe ser el correo institucional</span>
+                            </div>
+
+                            <div class="field">
+                                <label for="enrolment_year">
+                                    {{ form.enrolment_year.label }}
+                                </label>
+                                {{ form.enrolment_year }}
+
+                            </div>
+
+                            <div class="field">
+                                <label for="student_code">
+                                    {{ form.student_code.label }}
+                                </label>
+                                {{ form.student_code }}
+
+                            </div>
+
+                            <div class="field">
+                                <label for="password1">
+                                    {{ form.password1.label }}
+                                </label>
+                                {{ form.password1 }}
+
+                            </div>
+
+                            <div class="field">
+                                <label for="password1">
+                                    {{ form.password2.label }}
+                                </label>
+                                {{ form.password2 }}
+
+                            </div>
+
+                            <div class="field">
+                                <button class="ui primary button">Registrarse</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+{% endblock %}
