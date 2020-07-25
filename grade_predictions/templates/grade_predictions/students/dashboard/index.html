@@ -8,27 +8,28 @@
     <div style="margin-top: 14px"></div>
     {% include 'grade_predictions/students/dashboard/components/tabs.html' %}
 
-    <div class="ui four cards" style="margin-top: 40px">
+    <div class="mt-8 grid grid-cols-4 gap-2">
 
 
         {% for subject in user.related_user.subjects.all %}
 
-            <a class="ui card fluid" href="{% url 'subject_detail' subject.id %}">
+            <a class="p-4  overflow-hidden rounded shadow-md inline-block bg-white hover:shadow-lg"
+               href="{% url 'subject_detail' subject.id %}">
                 <div class="content">
-                    <div class="header">
+                    <div class="header text-2xl font-bold text-gray-900">
                         {{ subject.name }}
                     </div>
 
-                    <div class="description">
-                        <p>Profesor: <b>{{ subject.teachers.all  | first}}</b></p>
+                    <div class="text-sm text-gray-600">
+                        <p>Profesores: <b>{{ subject.teachers.all  | join:', '}}</b></p>
                     </div>
                 </div>
             </a>
 
 
         {% empty %}
-            <div class="segment fluid ui">
-                <p>No hay materias registradas</p>
+            <div class="mt-8 w-full col-span-4">
+                <p class="text-center text-4xl text-blue-500">No hay materias registradas</p>
             </div>
 
         {% endfor %}

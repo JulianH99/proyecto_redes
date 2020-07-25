@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from treenode.models import TreeNodeModel
 
 
 # Create your models here.
@@ -28,12 +29,13 @@ class Career(models.Model):
         return self.name
 
 
-class Subject(models.Model):
+class Subject(TreeNodeModel):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=30, unique=True)
     careers = models.ManyToManyField(Career, related_name='careers')
-    dependencies = models.ForeignKey('self', blank=True, null=True, related_name='parent', on_delete=models.CASCADE)
     teachers = models.ManyToManyField(Teacher)
+
+    treenode_display_field = 'name'
 
     def __str__(self):
         return self.name

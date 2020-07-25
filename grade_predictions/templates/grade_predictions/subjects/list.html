@@ -1,0 +1,41 @@
+{% extends 'grade_predictions/layouts/dashboard.html' %}
+
+{% block title %}
+    - Materias
+{% endblock %}
+
+
+{% block content %}
+    <div class="mt-10 w-full">
+        <div class="grid grid-cols-4 gap-2">
+            {% for subject in subject_list %}
+
+                <a class="d-blog bg-white p-4 rounded shadow-xs cursor-pointer hover:shadow-md"
+                    href="{% url 'subject_detail' subject.id %}">
+                        {% if subject in user.related_user.subjects.all %}
+                            <span class="mb-2 bg-blue-500 p-2 rounded text-white text-xs inline-block">Matriculado</span>
+                        {% endif %}
+                    <p class="text-2xl text-gray-900">
+                        {{ subject.name }}
+
+
+                    </p>
+                    <p class="mt-2 text-gray-600">Profesores:</p>
+                    <div class="mt-1 flex flex-wrap">
+                        {% for teacher in subject.teachers.all %}
+
+                            <div class="p-1 bg-gray-700 text-white text-xs inline-block rounded-md {% if not forloop.first %} ml-1 {% endif %}">
+                                {{ teacher.full_name }}
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <p class="mt-2 text-gray-600">Dependencias: <span
+                            class="text-gray-900">{{ subject.children_count }}</span></p>
+
+                </a>
+
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

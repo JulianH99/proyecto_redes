@@ -35,6 +35,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'tailwind',
+    'treenode',
     'grade_predictions.apps.GradePredictionsConfig',
     'debug_toolbar'
 ]
@@ -126,3 +128,8 @@ STATIC_URL = '/static/'
 AUTH_USER_MODEL = 'grade_predictions.GrUser'
 
 INTERNAL_IPS = ('127.0.0.1', )
+
+TAILWIND_APP_NAME = 'grade_predictions'
+
+
+STUDENT_LOGIN_URL = '/student/login/'

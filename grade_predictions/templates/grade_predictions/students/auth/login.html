@@ -5,52 +5,53 @@
 
 {% block content %}
 
-    <div class="ui grid middle aligned center aligned" style="height: 100vh">
+    <div class="w-1/3 flex flex-col justify-center" style="height: 100vh">
 
-        <div class="row centered">
-            <div class="six wide column">
+        <div class="shadow-md p-8 rounded bg-white">
 
-                <div class="ui fluid raised card">
-                    <div class="content">
-                        <h2 class="ui dividing header">Ingreso de estudiante</h2>
-                        <form method="post" class="ui form {% if form.password.errors or form.student_code.errors %} error {% endif %}">
-                            {% csrf_token %}
 
-                            <div class="field {% if form.student_code.errors %} error  {% endif %}">
-                                <label for="{{ form.student_code.id_for_label }}">Código estudiantil</label>
-                                {{ form.student_code }}
-                                {% if form.student_code.errors %}
-                                    <div class="ui error message">
-                                        {% for error in form.student_code.errors %}
-                                            {{ error }}
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
+            <div class="content">
+                <h2 class="text-3xl">Ingreso de estudiante</h2>
+                <div class="border-2 mb-3"></div>
+                <form method="post"
+                      class="ui form {% if form.password.errors or form.student_code.errors %} error {% endif %}">
+                    {% csrf_token %}
+
+                    <div class="mb-4">
+                        <label for="{{ form.student_code.id_for_label }}">Código estudiantil</label>
+                        {{ form.student_code }}
+                        {% if form.student_code.errors %}
+                            <div class="p-3 mt-3 rounded bg-red-200 text-red-500">
+                                {% for error in form.student_code.errors %}
+                                    {{ error }}
+                                {% endfor %}
                             </div>
-
-                            <div class="field  {% if form.password.errors %} error {% endif %}">
-                                <label for="{{ form.password.id_for_label }}">
-                                    Contraseña
-                                </label>
-                                {{ form.password }}
-                                {% if form.password.errors %}
-                                    <div class="ui error message">
-                                        {% for error in form.password.errors %}
-                                            {{ error }}
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
-
-                            </div>
-
-                            <div class="field">
-                                <button class="ui primary button">Ingresor</button>
-                                <a class="ui secondary button" href="{% url 'signup' %}">Registrarse</a>
-                            </div>
-                        </form>
+                        {% endif %}
                     </div>
-                </div>
+
+                    <div class="mb-4  {% if form.password.errors %} error {% endif %}">
+                        <label for="{{ form.password.id_for_label }}">
+                            Contraseña
+                        </label>
+                        {{ form.password }}
+                        {% if form.password.errors %}
+                            <div class="p-3 mt-3 rounded bg-red-300 text-red-600">
+                                {% for error in form.password.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+
+                    </div>
+
+                    <div class="mb-4">
+                        <button class="button bg-blue-500 hover:bg-blue-600 text-white">Ingresor</button>
+                        <a class="button bg-gray-700 hover:bg-gray-800 text-white ml-3" href="{% url 'signup' %}">Registrarse</a>
+                    </div>
+                </form>
+
             </div>
+
         </div>
 
 

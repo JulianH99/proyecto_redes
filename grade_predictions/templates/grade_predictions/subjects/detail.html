@@ -6,20 +6,68 @@
 {% endblock %}
 
 {% block content %}
-    <div class="ui grid ">
-        <div class="row">
-            <div class="ten wide column">
-                <a class="bx bx-arrow-back" href="{% url 'dashboard' %}"></a>
-                <h1 class="ui header">{{ subject.name }}</h1>
-
+    <div class=" mt-10">
+        <div class="w-12/12 mx-auto bg-white rounded shadow-xs px-4 py-6">
+            <div class="flex justify-between items-center pb-3">
+                <h1 class="text-4xl capitalize"> {{ subject.name }}</h1>
+                {% if subject not in user.related_user.subjects.all %}
+                    <form method="post" action="{% url 'subject_subscribe' %}"   >
+                        {% csrf_token %}
+                        <input type="hidden" value="{{ subject.id }}" name="subject_id">
+                        <button class="button secondary" type="submit">Matricularme</button>
+                    </form>
+                {% endif %}
             </div>
-            <div class="six wide column">
-                <form method="post" action="">
-                    <input type="hidden" value="{{ subject.id }}" />
-                    <button class="ui button primary">
-                        Matricularme
-                    </button>
-                </form>
+            <hr>
+
+            <div class="mt-4">
+                <h2 class="text-2xl text-gray-800">Carreras a las cuales pertenece:</h2>
+
+                <ul>
+                    {% for career in subject.careers.all %}
+                        <li class="text-gray-700">{{ career.name }}</li>
+                    {% endfor %}
+
+                </ul>
+            </div>
+
+            <div class="mt-4">
+                <h2 class="text-2xl text-gray-800">Profesores:</h2>
+                <div class="flex justify-start items-center">
+                    {% for teacher in subject.teachers.all %}
+                        <span class="p-2 bg-blue-200 text-blue-700 rounded
+                            {% if not forloop.first %} ml-2 {% endif %}">
+                            {{ teacher.full_name }}
+                        </span>
+                    {% endfor %}
+
+
+                </div>
+            </div>
+
+            <div class="mt-4 flex">
+                <div class="w-1/2">
+                    <h2 class="text-2xl text-gray-800 mb-3">Dependencias:</h2>
+                    <div class="divide-y-2 divide-gray-700">
+                        {% for child in subject.children %}
+
+                            <a class="text-gray-700 text-xl" href="{% url 'subject_detail' child.id %}">{{ child.name }}</a>
+                        {% empty %}
+                            <p class="text-gray-600 text-sm">Ésta materia no tiene dependencias</p>
+                        {% endfor %}
+                        
+                    </div>
+                </div>
+                <div class="w-1/2">
+                    <h2 class="text-2xl text-gray-800 mb-3">Materias que dependen de {{ subject.name }}:</h2>
+                    <div class="divide-y-2 divide-gray-700">
+                        {% for parent in subject.ancestors %}
+                            <a class="text-xl text-gray-700" href="{% url 'subject_detail' parent.id %}">{{ parent.name }}</a>
+                        {% empty %}
+                            <p class="text-gray-600 text-sm">Ninguna materia depende de {{ subject.name }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
             </div>
         </div>
     </div>

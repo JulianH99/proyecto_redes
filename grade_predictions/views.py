@@ -1,8 +1,11 @@
 from django.shortcuts import render, HttpResponseRedirect, HttpResponse, redirect
-from django.views.generic import CreateView, FormView, DetailView
+from django.views.generic import CreateView, FormView, DetailView, ListView
 from django.contrib.auth import authenticate, login, logout as user_logout
 from django.contrib.auth.views import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
+from django.urls import reverse
+from django.conf import settings
 
 # Create your views here.
 
@@ -55,7 +58,7 @@ class StudentLoginView(FormView):
             return self.form_invalid(form)
 
 
-@login_required()
+@login_required(login_url=settings.STUDENT_LOGIN_URL)
 def dashboard(request):
 
     return render(request, 'grade_predictions/students/dashboard/index.html', {
@@ -63,13 +66,42 @@ def dashboard(request):
     })
 
 
-
-class SubjectDetailView(DetailView):
+class SubjectDetailView(LoginRequiredMixin, DetailView):
+    login_url = settings.STUDENT_LOGIN_URL
     model = Subject
     template_name = 'grade_predictions/subjects/detail.html'
 
 
-@login_required()
+class SubjectListView(LoginRequiredMixin, ListView):
+    login_url = settings.STUDENT_LOGIN_URL
+    model = Subject
+    template_name = 'grade_predictions/subjects/list.html'
+
+
+@login_required(login_url=settings.STUDENT_LOGIN_URL)
+def subscribe_to_subject(request):
+    if request.method == 'POST':
+        data = request.POST
+        st = Student.objects.get(user_id=request.user.id)
+        subject = Subject.objects.get(id=data['subject_id'])
+        st.subjects.add(subject)
+        st.save()
+
+        return redirect(reverse('dashboard'))
+    else:
+        return HttpResponse('', status=404)
+
+
+@login_required(login_url=settings.STUDENT_LOGIN_URL)
+def unsubscribe_from_all(request):
+    st = Student.objects.get(user_id=request.user.id)
+    st.subjects.clear()
+    st.save()
+
+    return redirect(reverse('dashboard'))
+
+
+@login_required(login_url=settings.STUDENT_LOGIN_URL)
 def logout(request):
     user_logout(request)
     return redirect('/student/login')
