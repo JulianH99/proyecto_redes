@@ -10,7 +10,7 @@ from django.conf import settings
 # Create your views here.
 
 from . import forms
-from .models import GrUser, Student, Subject
+from .models import GrUser, Student, Subject, Career
 
 
 class StudentSignupView(CreateView):
@@ -77,6 +77,25 @@ class SubjectListView(LoginRequiredMixin, ListView):
     model = Subject
     template_name = 'grade_predictions/subjects/list.html'
 
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = {'careers': Career.objects.all()}
+
+        return super(SubjectListView, self).get_context_data(**context)
+
+    def get_queryset(self):
+        filters = self.request.GET
+        subjects = Subject.objects
+
+        if 'query' in filters and filters['query'] is not None:
+            subjects = subjects.filter(name__contains=filters['query'])
+
+        if 'career[]' in filters and len(filters['career[]']):
+            subjects = subjects.filter(careers__careers__id__in=filters['career[]'])
+
+        print(subjects.all(), filters)
+
+        return subjects.all()
+
 
 @login_required(login_url=settings.STUDENT_LOGIN_URL)
 def subscribe_to_subject(request):
@@ -96,6 +115,15 @@ def subscribe_to_subject(request):
 def unsubscribe_from_all(request):
     st = Student.objects.get(user_id=request.user.id)
     st.subjects.clear()
+    st.save()
+
+    return redirect(reverse('dashboard'))
+
+
+@login_required(login_url=settings.STUDENT_LOGIN_URL)
+def unsubscribe_from_subject(request, subject_id):
+    st = Student.objects.get(user_id=request.user.id)
+    st.subjects.set(st.subjects.exclude(id=subject_id))
     st.save()
 
     return redirect(reverse('dashboard'))

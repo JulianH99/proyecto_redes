@@ -6,7 +6,36 @@
 
 
 {% block content %}
-    <div class="mt-10 w-full">
+
+    <div class="flex mt-10">
+        <div class="w-3/12">
+            <form class="p-1">
+
+                <div class="mb-4">
+                    <label>Buscar por nombre</label>
+                    <input type="search" name="query">
+                </div>
+                <div class="mb-4">
+                    <label>Carrera</label>
+
+                        {% for career in careers %}
+                            <label class="flex items-center mt-3">
+                                <input type="checkbox" value="{{ career.snies }}" name="career[]" class=" mr-2">
+                                {{ career.name }}
+                            </label>
+                        {% endfor %}
+
+                </div>
+
+                <div>
+                    <button class="button secondary">
+                        Filtrar
+                    </button>
+                </div>
+            </form>
+        </div>
+        <div class="w-9/12 ml-10">
+            <div class="mt-10 w-full">
         <div class="grid grid-cols-4 gap-2">
             {% for subject in subject_list %}
 
@@ -38,4 +67,7 @@
             {% endfor %}
         </div>
     </div>
+        </div>
+    </div>
+
 {% endblock %}

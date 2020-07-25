@@ -19058,7 +19058,7 @@ label {
   font-weight: 700;
 }
 
-input {
+input:not([type="checkbox"]) {
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
   -webkit-appearance: none;
      -moz-appearance: none;
@@ -19076,7 +19076,7 @@ input {
   line-height: 1.25;
 }
 
-input:focus {
+input:not([type="checkbox"]):focus {
   outline: 0;
   box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
 }
