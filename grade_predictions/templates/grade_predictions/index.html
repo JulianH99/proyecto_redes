@@ -1,0 +1,14 @@
+{% extends 'grade_predictions/layouts/auth.html' %}
+
+{% block title %} - Inicio {% endblock %}
+
+
+{% block content %}
+    <a class="w-1/2 h-screen flex justify-center items-center h-full bg-blue-500 text-gray-800 text-5xl hover:bg-blue-600"
+    href="{% url 'login' %}">
+        Estudiante
+    </a>
+    <a class="w-1/2 h-screen flex justify-center items-center h-full bg-indigo-500 text-gray-800 text-5xl hover:bg-indigo-600">
+        Profesor
+    </a>
+{% endblock %}

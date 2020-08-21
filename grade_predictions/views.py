@@ -13,11 +13,15 @@ from . import forms
 from .models import GrUser, Student, Subject, Career
 
 
+def index(request):
+    return render(request, 'grade_predictions/index.html')
+
+
 class StudentSignupView(CreateView):
     model = Student
     form_class = forms.StudentSignupForm
     template_name = 'grade_predictions/students/auth/signup.html'
-    success_url = '/student/login'
+    success_url = '/login'
 
     def form_valid(self, form):
 
@@ -36,7 +40,7 @@ class StudentSignupView(CreateView):
 class StudentLoginView(FormView):
     template_name = 'grade_predictions/students/auth/login.html'
     form_class = forms.StudentLoginForm
-    success_url = '/student/dashboard'
+    success_url = '/dashboard'
 
     def form_valid(self, form):
         try:
@@ -130,9 +134,30 @@ def unsubscribe_from_subject(request, subject_id):
 
 
 @login_required(login_url=settings.STUDENT_LOGIN_URL)
+def view_grades(request, subject_id=''):
+
+    subjects = Student.objects.get(user=request.user).subjects.all()
+    context = {'grades': True}
+    if subject_id:
+        context['subject'] = Subject.objects.get(id=subject_id)
+
+    context['subjects'] = subjects
+
+    if request.method == 'POST':
+        grade = request.POST['grade']
+
+        if subject_id:
+            context['subject'].grade_set.create(subject=context['subject'],
+                                                student=request.user.related_user,
+                                                value=grade)
+
+    return render(request, 'grade_predictions/students/dashboard/grades.html', context)
+
+
+@login_required(login_url=settings.STUDENT_LOGIN_URL)
 def logout(request):
     user_logout(request)
-    return redirect('/student/login')
+    return redirect('/login')
 
 
 

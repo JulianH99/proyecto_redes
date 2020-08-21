@@ -18,7 +18,7 @@ from django.urls import path, include
 from django.conf import settings
 
 urlpatterns = [
-    path('student/', include('grade_predictions.urls')),
+    path('', include('grade_predictions.urls')),
     path('admin/', admin.site.urls),
 ]
 

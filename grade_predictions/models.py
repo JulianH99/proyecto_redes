@@ -58,6 +58,14 @@ class Student(GrUser):
         verbose_name = 'Student'
 
 
+class Grade(models.Model):
+    id = models.AutoField(primary_key=True)
+    value = models.FloatField()
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    status_text = models.CharField(max_length=50, default='Sin estado')
+    status = models.IntegerField(default=0)
+
 
 
 
